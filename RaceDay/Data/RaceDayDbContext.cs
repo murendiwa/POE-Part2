@@ -109,7 +109,7 @@ public class RaceDayDbContext : DbContext
                   .HasConversion<string>().HasMaxLength(20)
                   .HasDefaultValue(ResultStatus.Finished);
 
-            entity.Property(r => r.RecordedAt).HasDefaultValueSql("GETDATE()");
+            entity.Property(r => r.StartTime).HasDefaultValueSql("GETDATE()");
 
             entity.HasOne(r => r.Enrolment)
                   .WithOne(e => e.Result)

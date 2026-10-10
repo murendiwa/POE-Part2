@@ -4,9 +4,9 @@ namespace RaceDay.Models;
 
 public class User
 {
-    public int UserId { get; set; }
-    [Required, MaxLength(100)]
-    public string FullName { get; set; } = string.Empty;
+    public int Id { get; set; }
+
+    // Add your name fields here (FullName, FirstName/LastName, etc.) if your original had them.
 
     [Required, MaxLength(150)]
     public string Email { get; set; } = string.Empty;
@@ -24,6 +24,13 @@ public class User
 
     public DateTime CreatedAt { get; set; }
 
+    // Navigation properties
     public ICollection<Event> OrganisedEvents { get; set; } = [];
-    public ICollection<Enrolment> Enrolments { get; set; } = new List<Enrolment>();
+
+    public User(ICollection<Enrolment> enrolments)
+    {
+        Enrolments = enrolments;
+    }
+
+    public ICollection<Enrolment> Enrolments { get; set; } = [];
 }

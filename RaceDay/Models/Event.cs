@@ -4,22 +4,28 @@ namespace RaceDay.Models;
 
 public class Event
 {
+    private int id;
+
+    public int Id { get => id; set => id = value; }
+
     [Required, MaxLength(150)]
-    public string Email { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
 
-    [Required, MaxLength(255)]
-    public string PasswordHash { get; set; } = string.Empty;
+    [MaxLength(1000)]
+    public string? Description { get; set; }
 
-    [Required]
-    public UserRole Role { get; set; } = UserRole.Participant;
+    [MaxLength(200)]
+    public string? Location { get; set; }
 
-    [MaxLength(20)]
-    public string? PhoneNumber { get; set; }
+    public DateTime EventDate { get; set; }
 
-    public DateOnly? DateOfBirth { get; set; }
+    public EventStatus Status { get; set; } = EventStatus.Scheduled;
 
     public DateTime CreatedAt { get; set; }
 
-    public ICollection<Event> OrganisedEvents { get; set; } = new List<Event>();
-    public ICollection<Enrolment> Enrolments { get; set; } = new List<Enrolment>();
+    // Foreign key + navigation to the organiser (a User)
+    public int OrganiserId { get; set; }
+    public User Organiser { get; set; } = null!;
+
+    public ICollection<Category> Categories { get; set; } = [];
 }
