@@ -28,4 +28,6 @@ public class Event
     public User Organiser { get; set; } = null!;
 
     public ICollection<Category> Categories { get; set; } = [];
+    public string? Province { get; internal set; }
+    public int EventId { get; internal set; }
 }
