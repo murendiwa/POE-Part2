@@ -13,6 +13,7 @@ namespace RaceDay.Auth;
 public class RequireRoleAttribute : Attribute, IAuthorizationFilter
 {
     private readonly UserRole[] _roles;
+    public IReadOnlyList<UserRole> Roles => _roles;
 
     public RequireRoleAttribute(params UserRole[] roles) => _roles = roles;
 
