@@ -4,9 +4,11 @@ namespace RaceDay.Models;
 
 public class Event
 {
-    private int id;
+    // Primary key (EventId used across code and tests)
+    public int EventId { get; set; }
 
-    public int Id { get => id; set => id = value; }
+    // Backwards-compatible Id property (maps to EventId)
+    public int Id { get => EventId; set => EventId = value; }
 
     [Required, MaxLength(150)]
     public string Name { get; set; } = string.Empty;
@@ -27,7 +29,6 @@ public class Event
     public int OrganiserId { get; set; }
     public User Organiser { get; set; } = null!;
 
-    public ICollection<Category> Categories { get; set; } = [];
-    public string? Province { get; internal set; }
-    public int EventId { get; internal set; }
+    public ICollection<Category> Categories { get; set; } = new List<Category>();
+    public string? Province { get; set; }
 }

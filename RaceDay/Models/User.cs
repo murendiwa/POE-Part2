@@ -6,9 +6,11 @@ namespace RaceDay.Models;
 
 public class User
 {
-    public int Id { get; set; }
+    // Primary key (use UserId throughout the codebase and tests)
+    public int UserId { get; set; }
 
-    // Add your name fields here (FullName, FirstName/LastName, etc.) if your original had them.
+    // Backwards-compatible Id property (maps to UserId)
+    public int Id { get => UserId; set => UserId = value; }
 
     [Required, MaxLength(150)]
     public string Email { get; set; } = string.Empty;
@@ -38,6 +40,5 @@ public class User
     }
 
     public ICollection<Enrolment> Enrolments { get; set; } = new List<Enrolment>();
-    public string FullName { get; internal set; } = string.Empty;
-    public int UserId { get; internal set; }
+    public string FullName { get; set; } = string.Empty;
 }
