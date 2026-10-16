@@ -4,11 +4,6 @@ using RaceDay.Models;
 
 namespace RaceDay.Auth;
 
-/// <summary>
-/// [RequireRole] = any logged-in user.
-/// [RequireRole(UserRole.Organiser)] = organisers only.
-/// No attribute = public endpoint.
-/// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class RequireRoleAttribute : Attribute, IAuthorizationFilter
 {
