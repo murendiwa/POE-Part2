@@ -43,7 +43,7 @@ public class AuthController : ControllerBase
         return StatusCode(StatusCodes.Status201Created, ToResponse(user));
     }
 
-    /// <summary>Log in with email and password. Starts a server-side session holding your user ID and role.</summary>
+    /// <summary>Log in with email and password.</summary>
     [HttpPost("login")]
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -70,7 +70,7 @@ public class AuthController : ControllerBase
         return Ok(new { message = "Logged out." });
     }
 
-    /// <summary>Return the currently logged-in user (read from the session).</summary>
+    /// <summary>Return the currently logged-in user.</summary>
     [HttpGet("me")]
     [RequireRole]
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]

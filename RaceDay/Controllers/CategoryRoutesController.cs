@@ -15,7 +15,7 @@ public class CategoryRoutesController : ControllerBase
 
     public CategoryRoutesController(RaceDayDbContext db) => _db = db;
 
-    /// <summary>Get the route of a category (public). Each category has at most one route.</summary>
+    /// <summary>Get the route of a category. Each category has at most one route.</summary>
     [HttpGet]
     [ProducesResponseType(typeof(RouteResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

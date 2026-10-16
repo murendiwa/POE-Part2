@@ -15,7 +15,7 @@ public class EnrolmentsController : ControllerBase
 
     public EnrolmentsController(RaceDayDbContext db) => _db = db;
 
-    /// <summary>Enrol the logged-in participant in a category. Fails if the event is not open, the category is full, or you are already enrolled.</summary>
+    /// <summary>Enrol the logged-in participant in a category.</summary>
     [HttpPost("categories/{categoryId:int}/enrolments")]
     [RequireRole(UserRole.Participant)]
     [ProducesResponseType(typeof(EnrolmentResponse), StatusCodes.Status201Created)]
@@ -48,7 +48,6 @@ public class EnrolmentsController : ControllerBase
         Enrolment enrolment;
         if (existing is not null)
         {
-            // The UNIQUE (ParticipantId, CategoryId) constraint allows one row per pair, so re-enrolling reactivates the cancelled row.
             existing.Status = EnrolmentStatus.Registered;
             existing.PaymentStatus = PaymentStatus.Pending;
             existing.EnrolmentDate = DateTime.Now;

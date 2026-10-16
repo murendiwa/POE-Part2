@@ -42,7 +42,7 @@ public class CategoriesController : ControllerBase
         return Ok(categories);
     }
 
-    /// <summary>Get a single category (public).</summary>
+    /// <summary>Get a single category.</summary>
     [HttpGet("categories/{id:int}")]
     [ProducesResponseType(typeof(CategoryResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -136,7 +136,7 @@ public class CategoriesController : ControllerBase
         return Ok(ToResponse(category));
     }
 
-    /// <summary>Delete a category (and its route). Only its event's organiser may do this, and only if nobody has enrolled.</summary>
+    /// <summary>Delete a category. Only its event's organiser may do this, and only if nobody has enrolled.</summary>
     [HttpDelete("categories/{id:int}")]
     [RequireRole(UserRole.Organiser)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -155,7 +155,7 @@ public class CategoriesController : ControllerBase
         if (await _db.Enrolments.AnyAsync(en => en.CategoryId == id))
             return Conflict(new { message = "This category has enrolments and cannot be deleted." });
 
-        _db.Categories.Remove(category); // the route cascades, as in the Part 1 schema
+        _db.Categories.Remove(category);
         await _db.SaveChangesAsync();
         return NoContent();
     }

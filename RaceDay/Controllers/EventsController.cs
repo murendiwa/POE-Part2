@@ -15,7 +15,7 @@ public class EventsController : ControllerBase
 
     public EventsController(RaceDayDbContext db) => _db = db;
 
-    /// <summary>List all events (public). Optionally filter by province and/or status.</summary>
+    /// <summary>List all events. Optionally filter by province and/or status.</summary>
     [HttpGet]
     [ProducesResponseType(typeof(List<EventResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll([FromQuery] string? province, [FromQuery] EventStatus? status)
@@ -48,7 +48,7 @@ public class EventsController : ControllerBase
         return Ok(events);
     }
 
-    /// <summary>Get one event with its categories (public).</summary>
+    /// <summary>Get one event with its categories.</summary>
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(EventDetailResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -159,7 +159,7 @@ public class EventsController : ControllerBase
         if (hasEnrolments)
             return Conflict(new { message = "This event cannot be deleted. Set its status to Cancelled instead." });
 
-        _db.Events.Remove(ev); // categories and routes cascade, as in the Part 1 schema
+        _db.Events.Remove(ev);
         await _db.SaveChangesAsync();
         return NoContent();
     }
