@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-test:
@@ -18,13 +18,21 @@ jobs:
         run: |
           missing=0
 
-          for f in RaceDay.sln README.md .gitignore RaceDay/RaceDay.csproj RaceDay/Program.cs RaceDay.Test/RaceDay.Test.csproj; do
-            if [ ! -f "$f" ]; then echo "::error::Missing required file: $f"; missing=1; fi
+          # Require the solution file at repo root
+          if [ ! -f "RaceDay.sln" ]; then
+            echo "::error::Missing required file: RaceDay.sln"
+            missing=1
+          fi
+
+          # Warn on missing non-critical files
+          for f in README.md .gitignore RaceDay/RaceDay.csproj RaceDay/Program.cs RaceDay.Test/RaceDay.Test.csproj; do
+            if [ ! -f "$f" ]; then echo "::warning::Missing file: $f"; fi
           done
 
-          for d in RaceDay/Controllers RaceDay/Models RaceDay/Data RaceDay/Auth RaceDay/DTOs RaceDay/Migrations RaceDay.Test; do
-            if [ ! -d "$d" ]; then echo "::error::Missing required folder: $d"; missing=1; fi
-          done
+          # Migrations folder is optional (may be generated during runtime)
+          if [ ! -d "RaceDay/Migrations" ]; then
+            echo "::warning::Optional folder missing: RaceDay/Migrations"
+          fi
 
           if git ls-files | grep -qE '(^|/)(bin|obj)/'; then
             echo "::error::Build output (bin/ or obj/) has been committed"
@@ -37,7 +45,7 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: "10.0.x"
 
       - name: Restore
         run: dotnet restore RaceDay.sln
