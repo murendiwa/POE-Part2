@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RaceDay.Auth;
 using RaceDay.Data;
 using RaceDay.Models;
-using RaceDay.Auth;
 using System.Diagnostics.CodeAnalysis;
 
 namespace RaceDay.Test;
@@ -110,5 +110,19 @@ public static class TestHelpers
         db.Enrolments.Add(enrolment);
         await db.SaveChangesAsync();
         return enrolment;
+    }
+    public static async Task<Result> AddResultAsync(this RaceDayDbContext db, Enrolment enrolment,
+    ResultStatus status = ResultStatus.Finished, int? position = 1, TimeSpan? finishTime = null)
+    {
+        var result = new Result
+        {
+            EnrolmentId = enrolment.EnrolmentId,
+            Status = status,
+            Position = position,
+            FinishTime = (TimeSpan)finishTime
+        };
+        db.Results.Add(result);
+        await db.SaveChangesAsync();
+        return result;
     }
 }

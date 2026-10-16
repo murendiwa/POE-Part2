@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using RaceDay.Auth;
 using RaceDay.Controllers;
 using RaceDay.DTOs;
 using RaceDay.Models;
-using RaceDay.Auth;
 
 namespace RaceDay.Test;
 
@@ -13,7 +12,7 @@ public class AuthControllerTests
     [Theory]
     [InlineData(UserRole.Organiser)]
     [InlineData(UserRole.Participant)]
-    public async Task Register_StoresChosenRoleAndNormalisedEmail(UserRole role)
+    public async Task RegisterStoresChosenRoleAndNormalisedEmail(UserRole role)
     {
         using var db = TestHelpers.CreateDb();
         var controller = new AuthController(db).WithSession();
@@ -33,7 +32,7 @@ public class AuthControllerTests
     }
 
     [Fact]
-    public async Task Register_HashesThePassword()
+    public async Task RegisterHashesThePassword()
     {
         using var db = TestHelpers.CreateDb();
         var controller = new AuthController(db).WithSession();
@@ -52,7 +51,7 @@ public class AuthControllerTests
     }
 
     [Fact]
-    public async Task Register_WithExistingEmail_ReturnsConflict()
+    public async Task RegisterWithExistingEmailReturnsConflict()
     {
         using var db = TestHelpers.CreateDb();
         await db.AddUserAsync(UserRole.Participant, email: "taken@test.com");
@@ -71,7 +70,7 @@ public class AuthControllerTests
     }
 
     [Fact]
-    public async Task Login_WithValidCredentials_StoresUserIdAndRoleInSession()
+    public async Task LoginWithValidCredentialsStoresUserIdAndRoleInSession()
     {
         using var db = TestHelpers.CreateDb();
         var user = await db.AddUserAsync(UserRole.Organiser, email: "org@test.com", password: "Password123!");
@@ -85,7 +84,7 @@ public class AuthControllerTests
     }
 
     [Fact]
-    public async Task Login_WithWrongPassword_Returns401AndNoSession()
+    public async Task LoginWithWrongPasswordReturns401AndNoSession()
     {
         using var db = TestHelpers.CreateDb();
         await db.AddUserAsync(UserRole.Participant, email: "p@test.com", password: "Password123!");
@@ -98,7 +97,7 @@ public class AuthControllerTests
     }
 
     [Fact]
-    public async Task Login_WithUnknownEmail_Returns401()
+    public async Task LoginWithUnknownEmailReturns401()
     {
         using var db = TestHelpers.CreateDb();
         var controller = new AuthController(db).WithSession();
@@ -123,7 +122,7 @@ public class AuthControllerTests
     }
 
     [Fact]
-    public async Task Me_ReturnsTheLoggedInUser()
+    public async Task MeReturnsTheLoggedInUser()
     {
         using var db = TestHelpers.CreateDb();
         var user = await db.AddUserAsync(UserRole.Participant, name: "Naledi", email: "naledi@test.com");

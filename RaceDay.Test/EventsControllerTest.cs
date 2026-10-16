@@ -21,7 +21,7 @@ public class EventsControllerTests
     // ---------- Public reads ----------
 
     [Fact]
-    public async Task GetAll_WithoutLogin_ReturnsAllEvents()
+    public async Task GetAllWithoutLoginReturnsAllEvents()
     {
         using var db = TestHelpers.CreateDb();
         var organiser = await db.AddUserAsync(UserRole.Organiser);
@@ -36,7 +36,7 @@ public class EventsControllerTests
     }
 
     [Fact]
-    public async Task GetAll_FiltersByProvince()
+    public async Task GetAllFiltersByProvince()
     {
         using var db = TestHelpers.CreateDb();
         var organiser = await db.AddUserAsync(UserRole.Organiser);
@@ -52,7 +52,7 @@ public class EventsControllerTests
     }
 
     [Fact]
-    public async Task GetById_ReturnsEventWithItsCategories()
+    public async Task GetByIdReturnsEventWithItsCategories()
     {
         using var db = TestHelpers.CreateDb();
         var organiser = await db.AddUserAsync(UserRole.Organiser);
@@ -68,7 +68,7 @@ public class EventsControllerTests
     }
 
     [Fact]
-    public async Task GetById_UnknownId_Returns404()
+    public async Task GetByIdUnknownIdReturns404()
     {
         using var db = TestHelpers.CreateDb();
         var controller = new EventsController(db).WithSession();
@@ -81,7 +81,7 @@ public class EventsControllerTests
     // ---------- Create ----------
 
     [Fact]
-    public async Task Create_AsOrganiser_AssignsTheLoggedInOrganiserAsOwner()
+    public async Task CreateAsOrganiserAssignsTheLoggedInOrganiserAsOwner()
     {
         using var db = TestHelpers.CreateDb();
         var organiser = await db.AddUserAsync(UserRole.Organiser);
@@ -95,7 +95,7 @@ public class EventsControllerTests
     }
 
     [Fact]
-    public async Task Create_WithPastDate_ReturnsBadRequestAndSavesNothing()
+    public async Task CreateWithPastDateReturnsBadRequestAndSavesNothing()
     {
         using var db = TestHelpers.CreateDb();
         var organiser = await db.AddUserAsync(UserRole.Organiser);
@@ -110,7 +110,7 @@ public class EventsControllerTests
     // ---------- Update (ownership) ----------
 
     [Fact]
-    public async Task Update_ByOwner_ChangesTheEvent()
+    public async Task UpdateByOwnerChangesTheEvent()
     {
         using var db = TestHelpers.CreateDb();
         var organiser = await db.AddUserAsync(UserRole.Organiser);
@@ -126,7 +126,7 @@ public class EventsControllerTests
     }
 
     [Fact]
-    public async Task Update_ByDifferentOrganiser_Returns403AndDoesNotChangeTheEvent()
+    public async Task UpdateByDifferentOrganiserReturns403AndDoesNotChangeTheEvent()
     {
         using var db = TestHelpers.CreateDb();
         var owner = await db.AddUserAsync(UserRole.Organiser);
@@ -143,7 +143,7 @@ public class EventsControllerTests
     }
 
     [Fact]
-    public async Task Update_UnknownId_Returns404()
+    public async Task UpdateUnknownIdReturns404()
     {
         using var db = TestHelpers.CreateDb();
         var organiser = await db.AddUserAsync(UserRole.Organiser);
@@ -157,7 +157,7 @@ public class EventsControllerTests
     // ---------- Delete (ownership + business rule) ----------
 
     [Fact]
-    public async Task Delete_ByDifferentOrganiser_Returns403AndKeepsTheEvent()
+    public async Task DeleteByDifferentOrganiserReturns403AndKeepsTheEvent()
     {
         using var db = TestHelpers.CreateDb();
         var owner = await db.AddUserAsync(UserRole.Organiser);
@@ -172,7 +172,7 @@ public class EventsControllerTests
     }
 
     [Fact]
-    public async Task Delete_WhenSomeoneIsEnrolled_Returns409AndKeepsTheEvent()
+    public async Task DeleteWhenSomeoneIsEnrolledReturns409AndKeepsTheEvent()
     {
         using var db = TestHelpers.CreateDb();
         var organiser = await db.AddUserAsync(UserRole.Organiser);
@@ -189,7 +189,7 @@ public class EventsControllerTests
     }
 
     [Fact]
-    public async Task Delete_ByOwnerWithNoEnrolments_Returns204AndRemovesTheEvent()
+    public async Task DeleteByOwnerWithNoEnrolmentsReturns204AndRemovesTheEvent()
     {
         using var db = TestHelpers.CreateDb();
         var organiser = await db.AddUserAsync(UserRole.Organiser);
