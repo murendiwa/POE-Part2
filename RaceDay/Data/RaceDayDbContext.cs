@@ -6,7 +6,6 @@ namespace RaceDay.Data;
 public class RaceDayDbContext : DbContext
 {
     public RaceDayDbContext(DbContextOptions<RaceDayDbContext> options) : base(options) { }
-
     public DbSet<User> Users => Set<User>();
     public DbSet<Event> Events => Set<Event>();
     public DbSet<Category> Categories => Set<Category>();
@@ -61,8 +60,8 @@ public class RaceDayDbContext : DbContext
 
         modelBuilder.Entity<RaceRoute>(entity =>
         {
-            entity.ToTable("Routes"); // class renamed to avoid clashing with RouteAttribute; table name unchanged
-            entity.HasIndex(r => r.CategoryId).IsUnique(); // enforces the 1-to-1
+            entity.ToTable("Routes");
+            entity.HasIndex(r => r.CategoryId).IsUnique();
 
             entity.HasOne(r => r.Category)
                   .WithOne(c => c.Route)
@@ -103,7 +102,7 @@ public class RaceDayDbContext : DbContext
 
         modelBuilder.Entity<Result>(entity =>
         {
-            entity.HasIndex(r => r.EnrolmentId).IsUnique(); // enforces the 1-to-1
+            entity.HasIndex(r => r.EnrolmentId).IsUnique();
 
             entity.Property(r => r.Status)
                   .HasConversion<string>().HasMaxLength(20)
