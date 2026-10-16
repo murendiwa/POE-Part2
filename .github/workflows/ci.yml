@@ -19,7 +19,7 @@ jobs:
           missing=0
 
           # Require the solution file at repo root
-          if [ ! -f "RaceDay.sln" ]; then
+          if [ ! -f "RaceDay.slnx" ]; then
             echo "::error::Missing required file: RaceDay.slnx"
             missing=1
           fi
