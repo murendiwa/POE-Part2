@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+
+      - name: Validate repository structure
+        run: |
+          missing=0
+
+          for f in RaceDay.sln README.md .gitignore RaceDay/RaceDay.csproj RaceDay/Program.cs RaceDay.Test/RaceDay.Test.csproj; do
+            if [ ! -f "$f" ]; then echo "::error::Missing required file: $f"; missing=1; fi
+          done
+
+          for d in RaceDay/Controllers RaceDay/Models RaceDay/Data RaceDay/Auth RaceDay/DTOs RaceDay/Migrations RaceDay.Test; do
+            if [ ! -d "$d" ]; then echo "::error::Missing required folder: $d"; missing=1; fi
+          done
+
+          if git ls-files | grep -qE '(^|/)(bin|obj)/'; then
+            echo "::error::Build output (bin/ or obj/) has been committed"
+            missing=1
+          fi
+
+          if [ "$missing" -ne 0 ]; then exit 1; fi
+          echo "Repository structure is valid."
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore RaceDay.sln
+
+      - name: Build
+        run: dotnet build RaceDay.sln --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test RaceDay.sln --configuration Release --no-build --verbosity normal
