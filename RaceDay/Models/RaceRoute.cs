@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿```csharp name=RaceDay/Models/RaceRoute.cs url=https://github.com/murendiwa/POE-Part2/blob/c2d1a6f4a067b6ec3f80b9f38be4c32d214d4652/RaceDay/Models/RaceRoute.cs
+using System.ComponentModel.DataAnnotations;
 
 namespace RaceDay.Models;
 
 public class RaceRoute
 {
+    [Key]
     public int RouteId { get; set; }
 
     [Required]
