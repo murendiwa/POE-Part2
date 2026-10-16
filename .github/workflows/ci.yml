@@ -20,7 +20,7 @@ jobs:
 
           # Require the solution file at repo root
           if [ ! -f "RaceDay.sln" ]; then
-            echo "::error::Missing required file: RaceDay.sln"
+            echo "::error::Missing required file: RaceDay.slnx"
             missing=1
           fi
 
@@ -48,10 +48,10 @@ jobs:
           dotnet-version: "10.0.x"
 
       - name: Restore
-        run: dotnet restore RaceDay.sln
+        run: dotnet restore RaceDay.slnx
 
       - name: Build
-        run: dotnet build RaceDay.sln --configuration Release --no-restore
+        run: dotnet build RaceDay.slnx --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test RaceDay.sln --configuration Release --no-build --verbosity normal
+        run: dotnet test RaceDay.slnx --configuration Release --no-build --verbosity normal
