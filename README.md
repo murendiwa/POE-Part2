@@ -6,9 +6,9 @@
 
 RaceDay is an ASP.NET Core Web API for managing race events. Organisers create events, categories (e.g. 10km, Half Marathon) and routes. Participants enrol in categories. Organisers record results, and anyone can view the public leaderboard.
 
-**Student:** [YOUR NAME] · **Student number:** [STUDENT NUMBER]
-**Module:** [MODULE CODE] · Part 2 (Web API)
-**Video walkthrough:** [PASTE VIDEO LINK HERE]
+**Student:** [Murendiwa Matari] · **Student number:** [ST10482173]
+**Module:** [Prog6212] · Part 2 (Web API)
+**Video walkthrough:** [There was Not time to make the Video]
 
 ## Tech stack
 
