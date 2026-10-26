@@ -4,10 +4,12 @@ namespace RaceDay.Models;
 
 public class RaceRoute
 {
+    [Key]
     public int RouteId { get; set; }
 
     [Required]
     public int CategoryId { get; set; }
+
     public Category Category { get; set; } = null!;
 
     [MaxLength(150)]

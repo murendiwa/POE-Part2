@@ -15,36 +15,38 @@ public class RaceDayDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>(entity =>
+        modelBuilder.Entity<RaceRoute>()
+            .HasKey(r => r.RouteId);
+
+        modelBuilder.Entity<RaceRoute>(entity =>
         {
-            entity.HasIndex(u => u.Email).IsUnique();
+            entity.ToTable("Routes");
+            entity.HasIndex(r => r.CategoryId).IsUnique();
 
-            entity.Property(u => u.Role)
-                  .HasConversion<string>().HasMaxLength(20)
-                  .HasDefaultValue(UserRole.Participant);
-
-            entity.Property(u => u.CreatedAt).HasDefaultValueSql("GETDATE()");
-
-            entity.ToTable(t => t.HasCheckConstraint(
-                "CK_Users_Role", "[Role] IN ('Organiser','Participant')"));
+            entity.HasOne(r => r.Category)
+                  .WithOne(c => c.Route)
+                  .HasForeignKey<RaceRoute>(r => r.CategoryId)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
+
+        // other entity configs...
 
         modelBuilder.Entity<Event>(entity =>
-        {
-            entity.Property(e => e.Status)
-                  .HasConversion<string>().HasMaxLength(20)
-                  .HasDefaultValue(EventStatus.Scheduled);
+            {
+                entity.Property(e => e.Status)
+                      .HasConversion<string>().HasMaxLength(20)
+                      .HasDefaultValue(EventStatus.Scheduled);
 
-            entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
 
-            entity.HasOne(e => e.Organiser)
-                  .WithMany(u => u.OrganisedEvents)
-                  .HasForeignKey(e => e.OrganiserId)
-                  .OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(e => e.Organiser)
+                      .WithMany(u => u.OrganisedEvents)
+                      .HasForeignKey(e => e.OrganiserId)
+                      .OnDelete(DeleteBehavior.Restrict);
 
-            entity.ToTable(t => t.HasCheckConstraint(
-                "CK_Events_Status", "[Status] IN ('Scheduled','Cancelled','Completed')"));
-        });
+                entity.ToTable(t => t.HasCheckConstraint(
+                    "CK_Events_Status", "[Status] IN ('Scheduled','Cancelled','Completed')"));
+            });
 
         modelBuilder.Entity<Category>(entity =>
         {
@@ -118,5 +120,6 @@ public class RaceDayDbContext : DbContext
             entity.ToTable(t => t.HasCheckConstraint(
                 "CK_Results_Status", "[Status] IN ('Finished','DNF','DNS')"));
         });
+
     }
 }
