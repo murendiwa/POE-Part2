@@ -119,7 +119,7 @@ public static class TestHelpers
             EnrolmentId = enrolment.EnrolmentId,
             Status = status,
             Position = position,
-            FinishTime = (TimeSpan)finishTime
+            FinishTime = finishTime
         };
         db.Results.Add(result);
         await db.SaveChangesAsync();

@@ -8,7 +8,7 @@ public class Result
     [Required]
     public int EnrolmentId { get; set; }
     public Enrolment Enrolment { get; set; } = null!;
-    public TimeSpan FinishTime { get; set; }
+    public TimeSpan? FinishTime { get; set; }
     public int? Position { get; set; }
 
     [Required]
