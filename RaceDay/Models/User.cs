@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace RaceDay.Models;
 
@@ -41,4 +39,6 @@ public class User
 
     public ICollection<Enrolment> Enrolments { get; set; } = new List<Enrolment>();
     public string FullName { get; set; } = string.Empty;
+
+    [MaxLength(500)] public string? ProfilePictureUrl { get; set; }
 }

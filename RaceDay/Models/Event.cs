@@ -31,4 +31,5 @@ public class Event
 
     public ICollection<Category> Categories { get; set; } = new List<Category>();
     public string? Province { get; set; }
+    [MaxLength(500)] public string? BannerUrl { get; set; }
 }
