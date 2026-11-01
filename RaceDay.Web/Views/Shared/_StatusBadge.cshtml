@@ -1,0 +1,14 @@
+﻿@* Usage: <partial name="_StatusBadge" model="enrolment.Status" />
+   TODO-ADAPT: use the exact status values from your Part 1 CHECK constraint. *@
+@model string
+@{
+    var key = (Model ?? "").Trim().ToLowerInvariant();
+    var cssClass = key switch
+    {
+        "confirmed" => "rd-status-confirmed",
+        "pending"   => "rd-status-pending",
+        "cancelled" or "canceled" or "rejected" => "rd-status-cancelled",
+        _ => "rd-status-other"
+    };
+}
+<span class="rd-status @cssClass">@(string.IsNullOrWhiteSpace(Model) ? "Unknown" : Model)</span>

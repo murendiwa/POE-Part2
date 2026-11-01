@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="..\RaceDay\Models\AccountModels.cs" Link="Models\AccountModels.cs" />
+  </ItemGroup>
+
 </Project>

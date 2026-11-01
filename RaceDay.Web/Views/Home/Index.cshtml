@@ -1,8 +1,17 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Welcome";
+    var role = Context.Session.GetString("Role");
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="rd-hero">
+    <h1>Find your <em>race.</em><br />Own the finish line.</h1>
+    <p class="lead my-4">RaceDay connects runners with events and gives organisers one place to manage enrolments and results.</p>
+    @if (role is null)
+    {
+        <a class="btn btn-rd btn-lg me-2" asp-controller="Account" asp-action="Register">Get started</a>
+        <a class="btn btn-outline-light btn-lg" asp-controller="Account" asp-action="Login">Log in</a>
+    }
+    else
+    {
+        <p class="fw-semibold">You are logged in as @Context.Session.GetString("UserName") (@role). Use the menu above to get going.</p>
+    }
+</section>
