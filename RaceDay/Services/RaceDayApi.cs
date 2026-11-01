@@ -1,18 +1,17 @@
-﻿using System.Net;
+﻿using RaceDay.Models;
+using System.Net;
 using System.Text.Json;
-using RaceDay.Models;
 
 namespace RaceDay.Services;
 
 internal record UploadResponse(string? Url);
-internal record MessageBody(string? Message);
+internal record MessageBody(string? Message, string? Detail);
 
 public class RaceDayApi(HttpClient http, IHttpContextAccessor accessor) : IRaceDayApi
 {
     private ISession Session => accessor.HttpContext!.Session;
 
     // ---------- Authentication ----------
-    // TODO-ADAPT: routes and field names below are placeholders. Match your Part 2 AuthController.
 
     public async Task<ApiResult<UserDto>> LoginAsync(LoginViewModel model)
     {
@@ -29,7 +28,7 @@ public class RaceDayApi(HttpClient http, IHttpContextAccessor accessor) : IRaceD
         if (string.IsNullOrEmpty(Session.GetString(ApiCookieHandler.SessionKey)))
             return ApiResult<UserDto>.Fail("We couldn't log you in right now. Please try again.");
 
-        Session.SetString("UserId", result.Data.Id.ToString());
+        Session.SetString("UserId", result.Data.UserId.ToString());
         Session.SetString("Role", result.Data.Role);
         Session.SetString("UserName", result.Data.FullName);
         return result;
@@ -122,15 +121,13 @@ public class RaceDayApi(HttpClient http, IHttpContextAccessor accessor) : IRaceD
         }
     }
 
-    // If the API returns { "message": "..." } for a 400/409, show that sentence. It's written for users
-    // (see Validate() in BlobStorageService). Anything else gets a generic message, never raw error text.
     private static async Task<string?> ReadFriendlyMessageAsync(HttpResponseMessage res)
     {
         if (res.StatusCode is not (HttpStatusCode.BadRequest or HttpStatusCode.Conflict)) return null;
         try
         {
-            var body = await res.Content.ReadFromJsonAsync<MessageBody>();
-            return string.IsNullOrWhiteSpace(body?.Message) || body.Message.Length > 200 ? null : body.Message;
+            var text = body?.Detail ?? body?.Message;
+            return string.IsNullOrWhiteSpace(text) || text.Length > 200 ? null : text;
         }
         catch { return null; }
     }

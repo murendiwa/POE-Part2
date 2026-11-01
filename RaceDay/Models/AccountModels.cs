@@ -40,4 +40,4 @@ public class RegisterViewModel
     public string Role { get; set; } = "Participant";   // "Participant" or "Organiser"
 }
 
-public record UserDto(int Id, string FullName, string Email, string Role, string? ProfilePictureUrl);
+public record UserDto(int UserId, string FullName, string Email, string Role);
