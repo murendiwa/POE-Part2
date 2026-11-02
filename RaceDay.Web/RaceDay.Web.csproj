@@ -8,10 +8,8 @@
 
   <ItemGroup>
     <Compile Include="..\RaceDay\Models\AccountModels.cs" Link="Models\AccountModels.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Events\" />
+    <Compile Include="..\RaceDay\Models\ApiModels.cs" Link="Models\ApiModels.cs" />
+    <Compile Include="..\RaceDay\Models\EventViewModels.cs" Link="Models\EventViewModels.cs" />
   </ItemGroup>
 
 </Project>

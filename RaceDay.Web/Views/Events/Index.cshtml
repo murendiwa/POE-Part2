@@ -1,0 +1,71 @@
+﻿@model EventListViewModel
+@{
+    ViewData["Title"] = "Upcoming events";
+}
+<div class="rd-card-header"><h1 class="mb-0">Upcoming events</h1></div>
+
+<form method="get" asp-action="Index" class="rd-card mb-4">
+    <div class="row g-3 align-items-end">
+        <div class="col-md-4">
+            <label class="form-label" for="search">Search</label>
+            <input id="search" name="search" value="@Model.Search" class="form-control" placeholder="Event name or location" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label" for="province">Province</label>
+            <select id="province" name="province" class="form-select">
+                <option value="">All provinces</option>
+                @foreach (var p in EventListViewModel.Provinces)
+                {
+                    <option value="@p" selected="@(p == Model.Province)">@p</option>
+                }
+            </select>
+        </div>
+        <div class="col-6 col-md-2">
+            <label class="form-label" for="from">From</label>
+            <input id="from" type="date" name="from" value="@Model.From?.ToString("yyyy-MM-dd")" class="form-control" />
+        </div>
+        <div class="col-6 col-md-2">
+            <label class="form-label" for="to">To</label>
+            <input id="to" type="date" name="to" value="@Model.To?.ToString("yyyy-MM-dd")" class="form-control" />
+        </div>
+        <div class="col-md-1 d-grid">
+            <button type="submit" class="btn btn-rd">Go</button>
+        </div>
+    </div>
+    <div class="mt-2"><a asp-action="Index" class="small">Clear filters</a></div>
+</form>
+
+@if (!Model.Events.Any())
+{
+    <div class="rd-card text-center py-5">
+        <h3>No events found</h3>
+        <p class="text-muted mb-0">No upcoming events match your filters. Try widening your search.</p>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var e in Model.Events)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="rd-card rd-event-card">
+                    @if (!string.IsNullOrWhiteSpace(e.BannerUrl))
+                    {
+                        <img src="@e.BannerUrl" class="rd-event-banner" alt="Banner for @e.Name" />
+                    }
+                    else
+                    {
+                        <div class="rd-event-banner rd-event-placeholder"><span>@e.Name</span></div>
+                    }
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <h4 class="mb-1">@e.Name</h4>
+                        <div class="rd-meta">@e.EventDate.ToString("ddd, dd MMM yyyy HH:mm")</div>
+                        <div class="rd-meta mb-2">@e.Location@(string.IsNullOrWhiteSpace(e.Province) ? "" : ", " + e.Province)</div>
+                        <p class="small text-muted flex-grow-1">@(e.Description is { Length: > 110 } ? e.Description[..110] + "..." : e.Description)</p>
+                        <a asp-action="Details" asp-route-id="@e.EventId" class="btn btn-rd w-100">View details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

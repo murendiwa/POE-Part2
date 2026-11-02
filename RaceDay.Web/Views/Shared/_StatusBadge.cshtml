@@ -1,14 +1,14 @@
 ﻿@* Usage: <partial name="_StatusBadge" model="enrolment.Status" />
-   TODO-ADAPT: use the exact status values from your Part 1 CHECK constraint. *@
+   Works for event status, enrolment status and payment status. *@
 @model string
 @{
     var key = (Model ?? "").Trim().ToLowerInvariant();
     var cssClass = key switch
     {
-        "confirmed" => "rd-status-confirmed",
-        "pending"   => "rd-status-pending",
-        "cancelled" or "canceled" or "rejected" => "rd-status-cancelled",
-        _ => "rd-status-other"
+        "confirmed" or "paid"      => "rd-status-confirmed",   // green
+        "registered" or "pending"  => "rd-status-pending",     // amber
+        "cancelled" or "dnf"       => "rd-status-cancelled",   // red
+        _                          => "rd-status-other"        // grey: Refunded, Completed, DNS...
     };
 }
 <span class="rd-status @cssClass">@(string.IsNullOrWhiteSpace(Model) ? "Unknown" : Model)</span>

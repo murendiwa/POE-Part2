@@ -203,3 +203,58 @@ h1, h2, h3, h4, h5, .rd-brand {
     padding: 1.25rem 0;
     font-size: .9rem;
 }
+
+/* Event cards and banners */
+.rd-event-card {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.rd-event-banner {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+    display: block;
+}
+
+.rd-event-banner-lg {
+    height: 280px;
+}
+
+.rd-event-placeholder {
+    background: linear-gradient(135deg, var(--rd-navy), var(--rd-navy-2) 55%, var(--rd-orange));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+}
+
+    .rd-event-placeholder span {
+        font-family: 'Barlow Condensed', sans-serif;
+        font-weight: 800;
+        font-size: 1.6rem;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+    }
+
+.rd-meta {
+    color: var(--rd-muted);
+    font-size: .95rem;
+}
+
+.table > :not(caption) > * > * {
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+}
+
+.table thead th {
+    font-family: 'Barlow Condensed', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--rd-navy);
+}
