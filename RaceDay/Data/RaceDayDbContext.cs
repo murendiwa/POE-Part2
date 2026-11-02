@@ -61,6 +61,7 @@ public class RaceDayDbContext : DbContext
         modelBuilder.Entity<RaceRoute>(entity =>
         {
             entity.ToTable("Routes");
+            entity.HasKey(r => r.RouteId);
             entity.HasIndex(r => r.CategoryId).IsUnique();
 
             entity.HasOne(r => r.Category)

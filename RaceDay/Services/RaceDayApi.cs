@@ -126,6 +126,7 @@ public class RaceDayApi(HttpClient http, IHttpContextAccessor accessor) : IRaceD
         if (res.StatusCode is not (HttpStatusCode.BadRequest or HttpStatusCode.Conflict)) return null;
         try
         {
+            var body = await res.Content.ReadFromJsonAsync<MessageBody>();
             var text = body?.Detail ?? body?.Message;
             return string.IsNullOrWhiteSpace(text) || text.Length > 200 ? null : text;
         }

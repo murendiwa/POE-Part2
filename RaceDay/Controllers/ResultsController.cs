@@ -85,7 +85,7 @@ public class ResultsController : ControllerBase
         var result = new Result
         {
             EnrolmentId = enrolmentId,
-            FinishTime = (TimeSpan)request.FinishTime,
+            FinishTime = request.FinishTime,
             Position = request.Position,
             Status = request.Status
         };
@@ -119,7 +119,7 @@ public class ResultsController : ControllerBase
         var result = await _db.Results.FirstOrDefaultAsync(r => r.EnrolmentId == enrolmentId);
         if (result is null) return NotFound(new { message = "No result has been recorded yet." });
 
-        result.FinishTime = (TimeSpan)request.FinishTime;
+        result.FinishTime = request.FinishTime;
         result.Position = request.Position;
         result.Status = request.Status;
 

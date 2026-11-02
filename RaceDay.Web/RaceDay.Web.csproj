@@ -10,4 +10,8 @@
     <Compile Include="..\RaceDay\Models\AccountModels.cs" Link="Models\AccountModels.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Events\" />
+  </ItemGroup>
+
 </Project>

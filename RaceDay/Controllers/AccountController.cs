@@ -9,7 +9,7 @@ public class AccountController(IRaceDayApi api) : Controller
     [HttpGet]
     public IActionResult Login()
     {
-        if (IsLoggedIn) return result.Data!.Role == "Participant"
+        if (IsLoggedIn) return HttpContext.Session.GetString("Role") == "Participant"
     ? RedirectToAction("Index", "Events")
     : RedirectToAction("Index", "Home");
         return View(new LoginViewModel());
