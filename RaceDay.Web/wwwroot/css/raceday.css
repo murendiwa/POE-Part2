@@ -258,3 +258,34 @@ h1, h2, h3, h4, h5, .rd-brand {
     letter-spacing: .04em;
     color: var(--rd-navy);
 }
+
+/* Dashboard stats and thumbnails */
+.rd-stat {
+    text-align: center;
+}
+
+.rd-stat-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 3.25rem;
+    font-weight: 800;
+    color: var(--rd-orange);
+    line-height: 1;
+}
+
+.rd-stat-label {
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--rd-muted);
+    font-weight: 600;
+    font-size: .85rem;
+    margin-top: .25rem;
+}
+
+.rd-thumb {
+    width: 64px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: var(--rd-navy);
+    display: block;
+}
