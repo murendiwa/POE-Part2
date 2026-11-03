@@ -1,0 +1,58 @@
+﻿@model List<OrganiserEventDto>
+@{
+    ViewData["Title"] = "My events";
+}
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+    <div class="rd-card-header mb-0"><h1 class="mb-0">My events</h1></div>
+    <a asp-action="Create" class="btn btn-rd">+ Create event</a>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="rd-card text-center py-5">
+        <h3>No events yet</h3>
+        <p class="text-muted mb-4">Create your first event and open it for enrolments.</p>
+        <a asp-action="Create" class="btn btn-rd">Create event</a>
+    </div>
+}
+else
+{
+    <div class="rd-card">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr><th></th><th>Event</th><th>Date</th><th>Type</th><th>Status</th><th class="text-end">Enrolments</th><th></th></tr>
+                </thead>
+                <tbody>
+                @foreach (var e in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrWhiteSpace(e.BannerUrl))
+                            {
+                                <img src="@e.BannerUrl" class="rd-thumb" alt="Banner for @e.Name" />
+                            }
+                            else
+                            {
+                                <div class="rd-thumb"></div>
+                            }
+                        </td>
+                        <td class="fw-semibold">@e.Name<div class="rd-meta fw-normal">@e.Location</div></td>
+                        <td>@e.EventDate.ToString("dd MMM yyyy HH:mm")</td>
+                        <td>@e.EventType &middot; @e.DistanceKm.ToString("0.##") km</td>
+                        <td><partial name="_StatusBadge" model="e.Status" /></td>
+                        <td class="text-end">@e.EnrolmentCount</td>
+                        <td class="text-end text-nowrap">
+                            <a asp-action="Edit" asp-route-id="@e.EventId" class="btn btn-rd-outline btn-sm">Edit</a>
+                            <form asp-action="Delete" asp-route-id="@e.EventId" method="post" class="d-inline"
+                                  onsubmit="return confirm('Delete this event? This cannot be undone.');">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
