@@ -20,3 +20,10 @@ public record OrganiserEventDto(int EventId, string? Name, string? Description, 
 
 public record EventRequestDto(string Name, string? Description, DateTime EventDate, string Location,
     string? Province, string Status, string EventType, decimal DistanceKm);
+
+public record CategoryDto(int CategoryId, int EventId, string? Name, decimal DistanceKm, int MaxParticipants, decimal EntryFee);
+public record CategoryRequestDto(string Name, decimal DistanceKm, int MaxParticipants, decimal EntryFee);
+public record EnrolmentUpdateRequestDto(string Status, string PaymentStatus);
+public record ResultDto(int ResultId, int EnrolmentId, int CategoryId, string? ParticipantName,
+    TimeSpan? FinishTime, int? Position, string Status, DateTime RecordedAt);
+public record ResultRequestDto(TimeSpan? FinishTime, int? Position, string Status);
