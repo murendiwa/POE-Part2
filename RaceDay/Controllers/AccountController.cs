@@ -9,10 +9,10 @@ public class AccountController(IRaceDayApi api) : Controller
     [HttpGet]
     public IActionResult Login()
     {
-        if (IsLoggedIn) return HttpContext.Session.GetString("Role") == "Participant"
-    ? RedirectToAction("Index", "Events")
-    : RedirectToAction("Index", "Home");
-        return View(new LoginViewModel());
+        if (!IsLoggedIn) return View(new LoginViewModel());
+        return HttpContext.Session.GetString("Role") == "Participant"
+            ? RedirectToAction("Index", "Events")
+            : RedirectToAction("Dashboard", "Organiser");
     }
 
     [HttpPost, ValidateAntiForgeryToken]
@@ -27,8 +27,9 @@ public class AccountController(IRaceDayApi api) : Controller
             return View(model);
         }
 
-        // Later (Steps 3-4) send Organisers to Organiser/Dashboard and Participants to Events/Index.
-        return RedirectToAction("Index", "Home");
+        return result.Data?.Role == "Participant"
+            ? RedirectToAction("Index", "Events")
+            : RedirectToAction("Dashboard", "Organiser");
     }
 
     [HttpGet]

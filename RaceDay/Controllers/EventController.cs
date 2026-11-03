@@ -76,4 +76,5 @@ public class EventsController(IRaceDayApi api) : BaseController
         TempData["Success"] = $"You're in! You are enrolled in {result.Data?.CategoryName ?? "the category"}.";
         return RedirectToAction("Index", "MyEnrolments");
     }
+
 }

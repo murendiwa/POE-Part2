@@ -19,6 +19,11 @@ public class EventRequest
     public string? Province { get; set; }
 
     public EventStatus Status { get; set; } = EventStatus.Scheduled;
+    [Required, AllowedValues("Road Run", "Trail Run", "Fun Run", "Cycling", "Triathlon")]
+    public string EventType { get; set; } = "";
+
+    [Range(0.1, 1000)]
+    public decimal DistanceKm { get; set; }
 }
 
 public class EventResponse
@@ -33,6 +38,9 @@ public class EventResponse
     public string? Province { get; set; }
     public EventStatus Status { get; set; }
     public DateTime CreatedAt { get; set; }
+    public string? EventType { get; set; }
+    public decimal DistanceKm { get; set; }
+    public string? BannerUrl { get; set; }
 }
 
 public class EventDetailResponse : EventResponse

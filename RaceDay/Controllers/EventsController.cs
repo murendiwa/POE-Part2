@@ -4,6 +4,7 @@ using RaceDay.Auth;
 using RaceDay.Data;
 using RaceDay.DTOs;
 using RaceDay.Models;
+using RaceDay.Web.Models;
 
 namespace RaceDay.Controllers;
 
@@ -41,7 +42,10 @@ public class EventsController : ControllerBase
                 Location = e.Location,
                 Province = e.Province,
                 Status = e.Status,
-                CreatedAt = e.CreatedAt
+                CreatedAt = e.CreatedAt,
+                EventType = e.EventType,
+                DistanceKm = e.DistanceKm,
+                BannerUrl = e.BannerUrl
             })
             .ToListAsync();
 
@@ -69,6 +73,9 @@ public class EventsController : ControllerBase
                 Province = e.Province,
                 Status = e.Status,
                 CreatedAt = e.CreatedAt,
+                EventType = e.EventType,
+                DistanceKm = e.DistanceKm,
+                BannerUrl = e.BannerUrl,
                 Categories = e.Categories.Select(c => new CategorySummary
                 {
                     CategoryId = c.CategoryId,
@@ -81,6 +88,34 @@ public class EventsController : ControllerBase
             .FirstOrDefaultAsync();
 
         return ev is null ? NotFound(new { message = "Event not found." }) : Ok(ev);
+    }
+
+    [HttpGet("mine")]
+    [RequireRole(UserRole.Organiser)]
+    public async Task<ActionResult<List<OrganiserEventDto>>> Mine()
+    {
+        var organiserId = HttpContext.Session.GetUserId()!.Value;
+
+        var events = await _db.Events
+            .AsNoTracking()
+            .Where(e => e.OrganiserId == organiserId)
+            .OrderBy(e => e.EventDate)
+            .Select(e => new OrganiserEventDto(
+                e.EventId,
+                e.Name,
+                e.Description,
+                e.EventDate,
+                e.Location,
+                e.Province,
+                e.Status.ToString(),
+                e.EventType,
+                e.DistanceKm,
+                e.BannerUrl,
+                e.Categories.SelectMany(c => c.Enrolments)
+                    .Count(en => en.Status != EnrolmentStatus.Cancelled)))
+            .ToListAsync();
+
+        return Ok(events);
     }
 
     /// <summary>Create an event. Organisers only. The event is owned by the logged-in organiser.</summary>
@@ -178,6 +213,9 @@ public class EventsController : ControllerBase
         Location = e.Location,
         Province = e.Province,
         Status = e.Status,
-        CreatedAt = e.CreatedAt
+        CreatedAt = e.CreatedAt,
+        EventType = e.EventType,
+        DistanceKm = e.DistanceKm,
+        BannerUrl = e.BannerUrl
     };
 }

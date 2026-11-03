@@ -10,6 +10,12 @@
     <Compile Include="..\RaceDay\Models\AccountModels.cs" Link="Models\AccountModels.cs" />
     <Compile Include="..\RaceDay\Models\ApiModels.cs" Link="Models\ApiModels.cs" />
     <Compile Include="..\RaceDay\Models\EventViewModels.cs" Link="Models\EventViewModels.cs" />
+    <Compile Include="..\RaceDay\Controllers\BaseController.cs" Link="Controllers\BaseController.cs" />
+    <Compile Include="..\RaceDay\Filters\RequireRoleAttribute.cs" Link="Filters\RequireRoleAttribute.cs" />
+    <Compile Include="..\RaceDay\Services\ApiCookieHandler.cs" Link="Services\ApiCookieHandler.cs" />
+    <Compile Include="..\RaceDay\Services\ApiRusult.cs" Link="Services\ApiRusult.cs" />
+    <Compile Include="..\RaceDay\Services\IRaceDayApi.cs" Link="Services\IRaceDayApi.cs" />
+    <Compile Include="..\RaceDay\Services\RaceDayApi.cs" Link="Services\RaceDayApi.cs" />
   </ItemGroup>
 
 </Project>

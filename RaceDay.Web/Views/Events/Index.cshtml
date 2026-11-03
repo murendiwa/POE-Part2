@@ -61,6 +61,7 @@ else
                         <h4 class="mb-1">@e.Name</h4>
                         <div class="rd-meta">@e.EventDate.ToString("ddd, dd MMM yyyy HH:mm")</div>
                         <div class="rd-meta mb-2">@e.Location@(string.IsNullOrWhiteSpace(e.Province) ? "" : ", " + e.Province)</div>
+                        <div class="rd-meta">@e.EventType &middot; @e.DistanceKm.ToString("0.##") km</div>
                         <p class="small text-muted flex-grow-1">@(e.Description is { Length: > 110 } ? e.Description[..110] + "..." : e.Description)</p>
                         <a asp-action="Details" asp-route-id="@e.EventId" class="btn btn-rd w-100">View details</a>
                     </div>

@@ -35,6 +35,9 @@ public class RaceDayDbContext : DbContext
                   .HasConversion<string>().HasMaxLength(20)
                   .HasDefaultValue(EventStatus.Scheduled);
 
+            entity.Property(e => e.DistanceKm).HasPrecision(6, 2);
+            entity.ToTable(t => t.HasCheckConstraint("CK_Events_DistanceKm", "[DistanceKm] >= 0"));
+
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
 
             entity.HasOne(e => e.Organiser)
@@ -119,5 +122,6 @@ public class RaceDayDbContext : DbContext
             entity.ToTable(t => t.HasCheckConstraint(
                 "CK_Results_Status", "[Status] IN ('Finished','DNF','DNS')"));
         });
+
     }
 }
