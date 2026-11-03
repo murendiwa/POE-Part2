@@ -5,7 +5,7 @@
     var key = (Model ?? "").Trim().ToLowerInvariant();
     var cssClass = key switch
     {
-        "confirmed" or "paid"      => "rd-status-confirmed",   // green
+        "confirmed" or "paid" or "finished" => "rd-status-confirmed", // green
         "registered" or "pending"  => "rd-status-pending",     // amber
         "cancelled" or "dnf"       => "rd-status-cancelled",   // red
         _                          => "rd-status-other"        // grey: Refunded, Completed, DNS...

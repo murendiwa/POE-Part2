@@ -1,0 +1,103 @@
+﻿@model ResultsPageViewModel
+@{
+    var ev = Model.Event;
+    ViewData["Title"] = "Results: " + ev.Name;
+}
+<a asp-controller="OrganiserEvents" asp-action="Index" class="text-decoration-none">&larr; My events</a>
+<div class="rd-card-header mt-3">
+    <h1 class="mb-0">Results</h1>
+    <div class="rd-meta">@ev.Name &middot; @ev.EventDate.ToString("dd MMM yyyy") &middot; <partial name="_StatusBadge" model="ev.Status" /></div>
+</div>
+
+@if (ev.Status != "Completed")
+{
+    <div class="alert alert-info d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <span>This event is still marked <strong>@ev.Status</strong>. Once the race is over, mark it as completed.</span>
+        <form asp-action="MarkCompleted" method="post" class="d-inline">
+            <input type="hidden" name="eventId" value="@ev.EventId" />
+            <button type="submit" class="btn btn-rd btn-sm">Mark as completed</button>
+        </form>
+    </div>
+}
+
+<p class="text-muted">Results you save are published straight away on the category leaderboard and on each participant's My Results page.</p>
+
+@if (Model.Groups.Count == 0)
+{
+    <div class="rd-card text-center py-5">
+        <h3>No categories yet</h3>
+        <p class="text-muted mb-3">Add categories and wait for enrolments before capturing results.</p>
+        <a asp-controller="OrganiserCategories" asp-action="Index" asp-route-eventId="@ev.EventId" class="btn btn-rd">Manage categories</a>
+    </div>
+}
+
+@foreach (var g in Model.Groups)
+{
+    <div class="rd-card mb-4">
+        <div class="rd-card-header">
+            <h2 class="mb-0">@g.Category.Name <small class="text-muted">@g.Category.DistanceKm.ToString("0.##") km</small></h2>
+        </div>
+
+        @if (g.Rows.Count == 0)
+        {
+            <p class="text-muted mb-0">No enrolled participants in this category.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr><th>Participant</th><th>Enrolment</th><th>Outcome</th><th>Finish time</th><th>Position</th><th></th></tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var r in g.Rows)
+                    {
+                        var id = r.Enrolment.EnrolmentId;
+                        var res = r.Result;
+                        var timeText = res?.FinishTime is { } t ? t.ToString(@"hh\:mm\:ss") : "";
+                        <tr>
+                            <td class="fw-semibold">
+                                @r.Enrolment.ParticipantName
+                                <form id="save-@id" asp-action="Save" method="post" class="d-none">
+                                    <input type="hidden" name="enrolmentId" value="@id" />
+                                    <input type="hidden" name="eventId" value="@ev.EventId" />
+                                    <input type="hidden" name="hasResult" value="@(res is not null ? "true" : "false")" />
+                                </form>
+                                <form id="del-@id" asp-action="DeleteResult" method="post" class="d-none"
+                                      onsubmit="return confirm('Remove this result?');">
+                                    <input type="hidden" name="enrolmentId" value="@id" />
+                                    <input type="hidden" name="eventId" value="@ev.EventId" />
+                                </form>
+                            </td>
+                            <td><partial name="_StatusBadge" model="r.Enrolment.Status" /></td>
+                            <td>
+                                <select name="status" form="save-@id" class="form-select form-select-sm" aria-label="Outcome">
+                                    @foreach (var o in ResultsPageViewModel.Outcomes)
+                                    {
+                                        <option value="@o" selected="@(o == (res?.Status ?? "Finished"))">@o</option>
+                                    }
+                                </select>
+                            </td>
+                            <td style="min-width:120px">
+                                <input type="text" name="finishTime" form="save-@id" value="@timeText" placeholder="hh:mm:ss"
+                                       class="form-control form-control-sm" aria-label="Finish time" />
+                            </td>
+                            <td style="min-width:90px">
+                                <input type="number" name="position" form="save-@id" value="@res?.Position" min="1"
+                                       class="form-control form-control-sm" aria-label="Finishing position" />
+                            </td>
+                            <td class="text-end text-nowrap">
+                                <button type="submit" form="save-@id" class="btn btn-rd btn-sm">Save</button>
+                                @if (res is not null)
+                                {
+                                    <button type="submit" form="del-@id" class="btn btn-outline-danger btn-sm">Remove</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+}

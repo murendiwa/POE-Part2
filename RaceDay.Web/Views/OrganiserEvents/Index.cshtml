@@ -37,7 +37,15 @@ else
                                 <div class="rd-thumb"></div>
                             }
                         </td>
-                        <td class="fw-semibold">@e.Name<div class="rd-meta fw-normal">@e.Location</div></td>
+                        <td class="fw-semibold">
+    @e.Name
+    <div class="rd-meta fw-normal">@e.Location</div>
+    <div class="small fw-normal mt-1">
+        <a asp-controller="OrganiserCategories" asp-action="Index" asp-route-eventId="@e.EventId">Categories</a> &middot;
+        <a asp-controller="OrganiserEnrolments" asp-action="Index" asp-route-eventId="@e.EventId">Enrolments</a> &middot;
+        <a asp-controller="OrganiserResults" asp-action="Index" asp-route-eventId="@e.EventId">Results</a>
+    </div>
+</td>
                         <td>@e.EventDate.ToString("dd MMM yyyy HH:mm")</td>
                         <td>@e.EventType &middot; @e.DistanceKm.ToString("0.##") km</td>
                         <td><partial name="_StatusBadge" model="e.Status" /></td>
