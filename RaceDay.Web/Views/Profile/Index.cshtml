@@ -1,0 +1,67 @@
+﻿@model ProfileViewModel
+@{
+    ViewData["Title"] = "My profile";
+    var initials = string.Concat((Model.FullName ?? "").Split(' ', StringSplitOptions.RemoveEmptyEntries)
+        .Take(2).Select(s => char.ToUpperInvariant(s[0])));
+}
+<div class="rd-card-header"><h1 class="mb-0">My profile</h1></div>
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="rd-card text-center">
+            @if (!string.IsNullOrWhiteSpace(Model.ProfilePictureUrl))
+            {
+                <img src="@Model.ProfilePictureUrl" class="rd-avatar mb-3" alt="Your profile picture" />
+            }
+            else
+            {
+                <div class="rd-avatar rd-avatar-placeholder mb-3 mx-auto">@(string.IsNullOrEmpty(initials) ? "?" : initials)</div>
+            }
+            <h4 class="mb-3">@Model.FullName</h4>
+
+            <form asp-action="UploadPicture" method="post" enctype="multipart/form-data">
+                <input type="file" name="picture" accept="image/jpeg,image/png,image/webp" class="form-control mb-2" aria-label="Profile picture" />
+                <div class="form-text mb-3">JPG, PNG or WEBP, up to 5 MB.</div>
+                <button type="submit" class="btn btn-rd w-100">Upload picture</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="rd-card">
+            <div class="rd-card-header"><h2 class="mb-0">Personal information</h2></div>
+            <form asp-action="Update" method="post" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+                <input type="hidden" asp-for="ProfilePictureUrl" />
+
+                <div class="mb-3">
+                    <label asp-for="FullName" class="form-label"></label>
+                    <input asp-for="FullName" class="form-control" autocomplete="name" />
+                    <span asp-validation-for="FullName" class="text-danger small"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" readonly />
+                    <div class="form-text">Your email is your login, so it can't be changed here.</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="PhoneNumber" class="form-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" autocomplete="tel" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DateOfBirth" class="form-label"></label>
+                        <input asp-for="DateOfBirth" type="date" class="form-control" />
+                        <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-rd">Save changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
