@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RaceDay.Data;
 using RaceDay.DTOs;
 using RaceDay.Models;
 using System.Security.Claims;
@@ -10,7 +11,7 @@ namespace RaceDay.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/users/me")]
-public class ProfileController(AppDbContext db) : ControllerBase   // TODO-ADAPT
+public class ProfileController(RaceDayDbContext db) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<ProfileResponse>> Get()
@@ -34,16 +35,16 @@ public class ProfileController(AppDbContext db) : ControllerBase   // TODO-ADAPT
 
         user.FullName = req.FullName.Trim();
         user.PhoneNumber = req.PhoneNumber;
-        user.DateOfBirth = req.DateOfBirth;   // TODO-ADAPT: match your property type
+        user.DateOfBirth = req.DateOfBirth;
         await db.SaveChangesAsync();
 
         return ToResponse(user);
     }
 
-    private async Task<User?> FindUserAsync()   // TODO-ADAPT: your user entity name
+    private async Task<User?> FindUserAsync()
     {
         var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        return await db.Users.FirstOrDefaultAsync(u => u.UserId == userId);   // TODO-ADAPT key name
+        return await db.Users.FirstOrDefaultAsync(u => u.UserId == userId);
     }
 
     private static ProfileResponse ToResponse(User u) => new()
