@@ -29,8 +29,8 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddSingleton(_ => new BlobServiceClient(
-    builder.Configuration["DefaultEndpointsProtocol=https;AccountName=raceday779;AccountKey=YiPCLZdYITl6bqTltzxlShs+1YUwRAoNg6piLNjxJa8tetrwHC3wXo2S1jSfp6ZFAqAABJ8bhS5w+AStQ0Z7Ww==;EndpointSuffix=core.windows.net"]
-        ?? throw new InvalidOperationException("Azure:ConnectionString is not configured.")));
+    builder.Configuration.GetConnectionString("AzureStorage")
+        ?? throw new InvalidOperationException("ConnectionStrings:AzureStorage is not configured.")));
 builder.Services.AddScoped<BlobStorageService>();
 
 var app = builder.Build();
