@@ -39,3 +39,21 @@ public class UserResponse
     public string Email { get; set; } = string.Empty;
     public UserRole Role { get; set; }
 }
+
+public class ProfileResponse
+{
+    public int UserId { get; set; }
+    public string? FullName { get; set; }
+    public string? Email { get; set; }
+    public string? PhoneNumber { get; set; }
+    public DateOnly? DateOfBirth { get; set; }     // use DateTime? if your User model does
+    public string? ProfilePictureUrl { get; set; }
+    public UserRole Role { get; set; }
+}
+
+public class ProfileUpdateRequest
+{
+    [Required, StringLength(100)] public string FullName { get; set; } = "";
+    [StringLength(20)] public string? PhoneNumber { get; set; }
+    public DateOnly? DateOfBirth { get; set; }
+}
