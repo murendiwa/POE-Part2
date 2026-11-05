@@ -27,3 +27,11 @@ public record EnrolmentUpdateRequestDto(string Status, string PaymentStatus);
 public record ResultDto(int ResultId, int EnrolmentId, int CategoryId, string? ParticipantName,
     TimeSpan? FinishTime, int? Position, string Status, DateTime RecordedAt);
 public record ResultRequestDto(TimeSpan? FinishTime, int? Position, string Status);
+public record MyResultDto(int ResultId, int EventId, string? EventName, DateTime EventDate, int CategoryId,
+    string? CategoryName, TimeSpan? FinishTime, int? Position, int TotalFinishers, string Status);
+
+public record ProfileDto(int UserId, string? FullName, string? Email, string? PhoneNumber,
+    DateTime? DateOfBirth, string? ProfilePictureUrl, string Role);
+
+// The date goes to the API as "yyyy-MM-dd" text, so it works whether the API stores DateOnly or DateTime.
+public record ProfileUpdateRequestDto(string FullName, string? PhoneNumber, string? DateOfBirth);
