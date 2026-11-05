@@ -1,0 +1,73 @@
+﻿@model List<MyResultDto>
+@{
+    ViewData["Title"] = "My results";
+    var finished = Model.Count(r => r.Status == "Finished");
+}
+<div class="rd-card-header"><h1 class="mb-0">My results</h1></div>
+
+@if (Model.Count == 0)
+{
+    <div class="rd-card text-center py-5">
+        <h3>No results yet</h3>
+        <p class="text-muted mb-4">Your race history appears here once an organiser publishes results for events you entered.</p>
+        <a asp-controller="Events" asp-action="Index" class="btn btn-rd">Browse events</a>
+    </div>
+}
+else
+{
+    <div class="row g-3 mb-4">
+        <div class="col-6"><div class="rd-card rd-stat"><div class="rd-stat-num">@Model.Count</div><div class="rd-stat-label">Races recorded</div></div></div>
+        <div class="col-6"><div class="rd-card rd-stat"><div class="rd-stat-num">@finished</div><div class="rd-stat-label">Races finished</div></div></div>
+    </div>
+
+    <div class="rd-card">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr><th>Event</th><th>Date</th><th>Category</th><th>Finish time</th><th>Position</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold">
+                                <a asp-controller="Events" asp-action="Details" asp-route-id="@r.EventId">@r.EventName</a>
+                            </td>
+                            <td>@r.EventDate.ToString("dd MMM yyyy")</td>
+                            <td>@r.CategoryName</td>
+                            <td>
+                                @if (r.Status == "Finished" && r.FinishTime is { } t)
+                                {
+                                    <span>@t.ToString(@"hh\:mm\:ss")</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                            </td>
+                            <td>
+                                @if (r.Status == "Finished" && r.Position is { } p)
+                                {
+                                    <strong>@Formatting.Ordinal(p)</strong>
+                                    <span class="text-muted">out of @r.TotalFinishers finishers</span>
+                                }
+                                else if (r.Status == "DNF")
+                                {
+                                    <span class="rd-status rd-status-cancelled">Did not finish</span>
+                                }
+                                else if (r.Status == "DNS")
+                                {
+                                    <span class="rd-status rd-status-other">Did not start</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
