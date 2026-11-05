@@ -28,4 +28,5 @@ public class ResultResponse
     public int? Position { get; set; }
     public int TotalFinishers { get; set; }      // finishers in the same category
     public ResultStatus Status { get; set; }
+    public DateTime RecordedAt { get; set; }
 }
