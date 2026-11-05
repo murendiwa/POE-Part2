@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [ main, part3-mvc ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   build-and-test:
@@ -49,6 +49,9 @@ jobs:
 
       - name: Restore
         run: dotnet restore RaceDay.slnx
+
+      - name: Build MVC
+        run: dotnet build RaceDay.Web/RaceDay.Web.csproj -c Release --no-restore
 
       - name: Build
         run: dotnet build RaceDay.slnx --configuration Release --no-restore
