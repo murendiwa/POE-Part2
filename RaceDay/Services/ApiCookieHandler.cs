@@ -13,7 +13,7 @@ public class ApiCookieHandler(IHttpContextAccessor accessor) : DelegatingHandler
         if (!string.IsNullOrEmpty(stored))
             request.Headers.TryAddWithoutValidation("Cookie", stored);
 
-        var response = await base.SendAsync(request, cancellationToken);
+        HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
 
         if (session is not null && response.Headers.TryGetValues("Set-Cookie", out var setCookies))
             session.SetString(SessionKey, Merge(stored, setCookies));
