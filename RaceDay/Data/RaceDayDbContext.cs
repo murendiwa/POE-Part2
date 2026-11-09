@@ -21,7 +21,7 @@ public class RaceDayDbContext : DbContext
 
             entity.Property(u => u.Role)
                   .HasConversion<string>().HasMaxLength(20)
-                  .HasDefaultValue(UserRole.Participant);
+                  .ValueGeneratedNever();
 
             entity.Property(u => u.CreatedAt).HasDefaultValueSql("GETDATE()");
 
