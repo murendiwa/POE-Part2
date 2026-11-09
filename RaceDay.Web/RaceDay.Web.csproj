@@ -13,6 +13,7 @@
     <Compile Include="..\RaceDay\Controllers\BaseController.cs" Link="Controllers\BaseController.cs" />
     <Compile Include="..\RaceDay\Models\OrganiserManageModels.cs" Link="Models\OrganiserManageModels.cs" />
     <Compile Include="..\RaceDay\Filters\RequireRoleAttribute.cs" Link="Filters\RequireRoleAttribute.cs" />
+    <Compile Include="..\RaceDay\Controllers\EventController.cs" Link="Controllers\EventController.cs" />
     <Compile Include="..\RaceDay\Services\ApiCookieHandler.cs" Link="Services\ApiCookieHandler.cs" />
     <Compile Include="..\RaceDay\Services\ApiRusult.cs" Link="Services\ApiRusult.cs" />
     <Compile Include="..\RaceDay\Services\IRaceDayApi.cs" Link="Services\IRaceDayApi.cs" />
