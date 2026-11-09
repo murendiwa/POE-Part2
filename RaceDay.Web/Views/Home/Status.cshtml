@@ -1,0 +1,16 @@
+﻿@{
+    var code = (int)(ViewData["Code"] ?? 500);
+    ViewData["Title"] = "Oops";
+    var (heading, text) = code switch
+    {
+        404 => ("Page not found", "We couldn't find the page you were looking for."),
+        401 or 403 => ("No access", "You don't have access to that page."),
+        400 => ("That didn't work", "Your request couldn't be processed. Please go back and try again."),
+        _ => ("Oops, we missed a turn", "Something went wrong on our side. Please try again in a moment.")
+    };
+}
+<div class="rd-card text-center py-5">
+    <h1>@heading</h1>
+    <p class="text-muted mb-4">@text</p>
+    <a class="btn btn-rd" asp-controller="Home" asp-action="Index">Back to start</a>
+</div>

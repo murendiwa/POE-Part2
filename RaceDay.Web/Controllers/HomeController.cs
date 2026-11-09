@@ -1,6 +1,6 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using RaceDay.Web.Models;
+using System.Diagnostics;
 
 namespace RaceDay.Web.Controllers;
 
@@ -20,5 +20,10 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+    public IActionResult Status(int code)
+    {
+        ViewData["Code"] = code;
+        return View();
     }
 }
