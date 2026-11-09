@@ -1,9 +1,20 @@
+using RaceDay.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<ApiCookieHandler>();
+builder.Services.AddHttpClient<IRaceDayApi, RaceDayApi>(http =>
+{
+    var baseUrl = builder.Configuration["Api:BaseUrl"]
+        ?? throw new InvalidOperationException("Api:BaseUrl is not configured.");
+    http.BaseAddress = new Uri(baseUrl.TrimEnd('/') + "/");
+})
+    .AddHttpMessageHandler<ApiCookieHandler>();
 
 var app = builder.Build();
 
@@ -28,6 +39,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();
