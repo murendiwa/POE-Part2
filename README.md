@@ -142,7 +142,7 @@ Every push to `main` runs the GitHub Actions workflow in `.github/workflows/ci.y
 2. Restores and builds the solution in Release mode
 3. Runs all unit tests
 
-![Green CI build](docs/ci-green-build.png)
+![Green CI build](https://github.com/murendiwa/POE-Part2/actions/workflows/ci.yml/badge.svg)
 
 ## Unit tests
 
